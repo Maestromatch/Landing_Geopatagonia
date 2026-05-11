@@ -5,7 +5,8 @@ const smartData = {
     plazo: 'No especificado'
 };
 
-const WHATSAPP_NUMBER = '56952528416';
+const WHATSAPP_NUMBER = '56968171774';
+const REFERRER_NAME = 'Saul Ferreira';
 
 function $(selector) {
     return document.querySelector(selector);
@@ -62,6 +63,7 @@ async function sendLead(leadData) {
             ...leadData,
             fecha: new Date().toISOString(),
             canal: 'Landing GeoPatagonia',
+            referido_por: REFERRER_NAME,
             estado: 'nuevo'
         })
     });
@@ -73,7 +75,7 @@ async function sendLead(leadData) {
 
 function buildWhatsAppUrl(leadData) {
     const message = [
-        'Hola, quiero informacion de GeoPatagonia.',
+        `Hola Gonzalo, soy un contacto derivado por ${REFERRER_NAME} desde la landing GeoPatagonia.`,
         `Nombre: ${leadData.nombre || 'No indicado'}`,
         `Telefono: ${leadData.telefono || 'No indicado'}`,
         `Email: ${leadData.email || 'No indicado'}`,
