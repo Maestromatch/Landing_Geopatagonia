@@ -1,0 +1,829 @@
+{
+    "name": "GeoPatagonia - PUBLICADOR V1 (IG + TikTok)",
+    "nodes": [
+        {
+            "id": "geo-pub-note",
+            "name": "📌 LEER ANTES DE ACTIVAR",
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                100,
+                50
+            ],
+            "parameters": {
+                "content": "# 🌲 PUBLICADOR GEOPATAGONIA\n\n## ✅ CONFIGURAR ANTES DE ACTIVAR:\n\n**1. Carpetas de Google Drive:** Actualiza los IDs de las carpetas en los nodos 'Trigger Fotos', 'Trigger Videos' y 'Listar Archivos Carrusel' con las carpetas exclusivas de Fundo Los Tres / GeoPatagonia. DEBEN estar públicas.\n\n**2. Token Instagram:** Reemplaza el `access_token` en los nodos de Facebook Graph API con el token de la cuenta de Instagram de GeoPatagonia.\n\n**3. TikTok:** Reemplaza `TU_TIKTOK_ACCESS_TOKEN_AQUI` con tu token de TikTok para GeoPatagonia.\n\nEste flujo está optimizado para vender terrenos, destacando plusvalía, naturaleza y rol propio.",
+                "height": 350,
+                "width": 620,
+                "color": 5
+            }
+        },
+        {
+            "id": "geo-foto-001",
+            "name": "Trigger Fotos Geo",
+            "type": "n8n-nodes-base.googleDriveTrigger",
+            "typeVersion": 1,
+            "position": [
+                800,
+                200
+            ],
+            "parameters": {
+                "pollTimes": {
+                    "item": [
+                        {
+                            "mode": "everyMinute"
+                        }
+                    ]
+                },
+                "triggerOn": "specificFolder",
+                "folderToWatch": {
+                    "__rl": true,
+                    "value": "TU_CARPETA_FOTOS_GEO_AQUI",
+                    "mode": "id"
+                },
+                "event": "fileCreated",
+                "options": {}
+            },
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "uqdx7FMLohZVyoTl",
+                    "name": "Google Drive OAuth2 API"
+                }
+            }
+        },
+        {
+            "id": "geo-foto-002",
+            "name": "IA Caption - Foto Geo",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                1100,
+                200
+            ],
+            "parameters": {
+                "prompt": "=Eres el Asesor Inmobiliario de Grupo GeoPatagonia. Tono: Exclusivo, que inspira tranquilidad y demuestra alta plusvalía.\n\nCrea un post de Instagram para vender un terreno en el Sur de Chile. Archivo/Proyecto: {{ $json.name }}\n\nEstructura OBLIGATORIA:\n1. 🌲 GANCHO (primera línea emocional sobre vivir/invertir en el sur)\n2. 📄 Certeza Técnica (Menciona: 5.000m2, Rol Propio, Factibilidad de luz/agua)\n3. 🏔️ Beneficio del entorno (Naturaleza, conectividad)\n4. 📲 CTA claro: \"Comenta TERRENO o háblanos por WhatsApp para recibir el Master Plan\"\n\nUsa emojis de naturaleza 🌲🏔️🦅📄📍\nHashtags: #GeoPatagonia #FundoLosTres #ParcelasSurDeChile #InversionInmobiliaria #SurDeChile #VivirEnElSur",
+                "options": {
+                    "maxTokens": 500,
+                    "model": "gpt-4"
+                }
+            },
+            "credentials": {
+                "openAiApi": {
+                    "id": "buFikxjsS6cTB55L",
+                    "name": "OpenAI account 2"
+                }
+            }
+        },
+        {
+            "id": "geo-foto-003",
+            "name": "Procesar Foto IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                1400,
+                200
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "image_url",
+                            "value": "=https://drive.google.com/uc?export=download&id={{ $('Trigger Fotos Geo').item.json.id }}"
+                        },
+                        {
+                            "name": "caption",
+                            "value": "={{ $('IA Caption - Foto Geo').item.json.text }}"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-foto-004",
+            "name": "Espera 60s - Foto",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1,
+            "position": [
+                1700,
+                200
+            ],
+            "webhookId": "wait-geo-foto-001",
+            "parameters": {
+                "amount": 60,
+                "unit": "seconds"
+            }
+        },
+        {
+            "id": "geo-foto-005",
+            "name": "Publicar Foto IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                2000,
+                200
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media_publish",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "creation_id",
+                            "value": "={{ $json.id }}"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-foto-006",
+            "name": "TikTok - Publicar Foto Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                2300,
+                200
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://open.tiktokapis.com/v2/post/publish/content/init/",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer TU_TIKTOK_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json; charset=UTF-8"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"media_type\": \"PHOTO\",\n  \"post_info\": {\n    \"title\": {{ JSON.stringify($('IA Caption - Foto Geo').item.json.text.substring(0, 150)) }},\n    \"privacy_level\": \"PUBLIC_TO_EVERYONE\",\n    \"disable_duet\": false,\n    \"disable_comment\": false,\n    \"disable_stitch\": false\n  },\n  \"source_info\": {\n    \"source\": \"PULL_FROM_URL\",\n    \"photo_images\": [\"https://drive.google.com/uc?export=download&id={{ $('Trigger Fotos Geo').item.json.id }}\"],\n    \"photo_cover_index\": 0\n  }\n}",
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-video-001",
+            "name": "Trigger Videos Geo",
+            "type": "n8n-nodes-base.googleDriveTrigger",
+            "typeVersion": 1,
+            "position": [
+                800,
+                500
+            ],
+            "parameters": {
+                "pollTimes": {
+                    "item": [
+                        {
+                            "mode": "everyMinute"
+                        }
+                    ]
+                },
+                "triggerOn": "specificFolder",
+                "folderToWatch": {
+                    "__rl": true,
+                    "value": "TU_CARPETA_VIDEOS_GEO_AQUI",
+                    "mode": "id"
+                },
+                "event": "fileCreated",
+                "options": {}
+            },
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "uqdx7FMLohZVyoTl",
+                    "name": "Google Drive OAuth2 API"
+                }
+            }
+        },
+        {
+            "id": "geo-video-002",
+            "name": "IA Caption - Video Geo",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                1100,
+                500
+            ],
+            "parameters": {
+                "prompt": "=Eres el Asesor Inmobiliario de GeoPatagonia. Tono: Emocionante, épico, que detenga el scroll.\n\nCrea un caption de Instagram para un VIDEO de dron sobrevolando nuestras parcelas. Proyecto: {{ $json.name }}\n\nEstructura OBLIGATORIA:\n1. 🎬 GANCHO (\"Sobrevuela tu próxima inversión...\" / \"Imagina despertar con esta vista...\")\n2. 📍 Ubicación privilegiada y plusvalía garantizada\n3. 📄 Detalles: 5.000m2 y Rol Propio listo para escriturar\n4. 📲 CTA: \"Escríbenos para agendar una visita en terreno o videollamada\"\n\nUsa emojis 🌲🚁🏔️🦅\nHashtags: #GeoPatagonia #ParcelasChile #InversionInteligente #SurDeChile #BienesRaicesChile",
+                "options": {
+                    "maxTokens": 500,
+                    "model": "gpt-4"
+                }
+            },
+            "credentials": {
+                "openAiApi": {
+                    "id": "buFikxjsS6cTB55L",
+                    "name": "OpenAI account 2"
+                }
+            }
+        },
+        {
+            "id": "geo-video-003",
+            "name": "Procesar Video IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                1400,
+                500
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "video_url",
+                            "value": "=https://drive.google.com/uc?export=download&id={{ $('Trigger Videos Geo').item.json.id }}"
+                        },
+                        {
+                            "name": "media_type",
+                            "value": "VIDEO"
+                        },
+                        {
+                            "name": "caption",
+                            "value": "={{ $('IA Caption - Video Geo').item.json.text }}"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-video-004",
+            "name": "Espera 60s - Video",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1,
+            "position": [
+                1700,
+                500
+            ],
+            "webhookId": "wait-geo-video-001",
+            "parameters": {
+                "amount": 60,
+                "unit": "seconds"
+            }
+        },
+        {
+            "id": "geo-video-005",
+            "name": "Publicar Video IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                2000,
+                500
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media_publish",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "creation_id",
+                            "value": "={{ $json.id }}"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-car-001",
+            "name": "Scheduler Carrusel Geo",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1,
+            "position": [
+                800,
+                800
+            ],
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "minutesInterval": 30
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "geo-car-002",
+            "name": "Listar Archivos Carrusel Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                1100,
+                800
+            ],
+            "parameters": {
+                "method": "GET",
+                "url": "https://www.googleapis.com/drive/v3/files",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "googleDriveOAuth2Api",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "q",
+                            "value": "'TU_CARPETA_CARRUSEL_GEO_AQUI' in parents and trashed = false"
+                        },
+                        {
+                            "name": "fields",
+                            "value": "files(id,name,mimeType)"
+                        },
+                        {
+                            "name": "orderBy",
+                            "value": "createdTime"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "uqdx7FMLohZVyoTl",
+                    "name": "Google Drive OAuth2 API"
+                }
+            }
+        },
+        {
+            "id": "geo-car-003",
+            "name": "Code - Filtrar Imagenes Geo",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                1400,
+                800
+            ],
+            "parameters": {
+                "mode": "runOnceForAllItems",
+                "jsCode": "const input = $input.first().json;\nconst files = input.files || [];\n\nconst imageFiles = files.filter(file => {\n  const name = (file.name || '').toLowerCase();\n  const mime = (file.mimeType || '');\n  return (\n    mime.startsWith('image/') ||\n    name.endsWith('.jpg') ||\n    name.endsWith('.png') ||\n    name.endsWith('.webp')\n  );\n});\n\nconst toProcess = imageFiles.slice(0, 10);\n\nreturn [{\n  json: {\n    count: toProcess.length,\n    fileIds: toProcess.map(f => f.id),\n    fileIdsJson: JSON.stringify(toProcess.map(f => f.id)),\n    firstFileName: (toProcess[0]?.name || 'Fundo Los Tres').replace(/\\.[^/.]+$/, ''),\n    allFileNames: toProcess.map(f => f.name).join(', ')\n  }\n}];"
+            }
+        },
+        {
+            "id": "geo-car-004",
+            "name": "IF - Hay suficientes imagenes?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                1700,
+                800
+            ],
+            "parameters": {
+                "conditions": {
+                    "number": [
+                        {
+                            "value1": "={{ $json.count }}",
+                            "operation": "largerEqual",
+                            "value2": 2
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "geo-car-005",
+            "name": "IA Caption - Carrusel Geo",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                2000,
+                780
+            ],
+            "parameters": {
+                "prompt": "=Eres el Asesor de GeoPatagonia. Crea un caption para un POST CARRUSEL de {{ $json.count }} imágenes de nuestros terrenos.\n\nProyecto: {{ $json.firstFileName }}\n\nEstructura OBLIGATORIA:\n1. 🔥 GANCHO (Invita a deslizar para enamorarse del paisaje)\n2. 💡 Beneficios (Topografía plana, bosque nativo, acceso a caminos)\n3. 📄 Certeza (Rol Propio, entrega inmediata)\n4. 👈 CTA: \"Desliza y elige tu vista favorita. Cotiza el tuyo por WhatsApp\"\n\nUsa emojis 🌲🏞️🛣️📄\nHashtags: #GeoPatagonia #ParcelasSurDeChile #InversionConRol #BienesRaices",
+                "options": {
+                    "maxTokens": 600,
+                    "model": "gpt-4"
+                }
+            },
+            "credentials": {
+                "openAiApi": {
+                    "id": "buFikxjsS6cTB55L",
+                    "name": "OpenAI account 2"
+                }
+            }
+        },
+        {
+            "id": "geo-car-006",
+            "name": "Set - Caption Geo",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3,
+            "position": [
+                2300,
+                780
+            ],
+            "parameters": {
+                "mode": "manual",
+                "duplicateItem": false,
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "assign-caption",
+                            "name": "caption",
+                            "value": "={{ $json.text }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "assign-fileids",
+                            "name": "fileIdsJson",
+                            "value": "={{ $('Code - Filtrar Imagenes Geo').item.json.fileIdsJson }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-car-007",
+            "name": "Code - Expandir Items Geo",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                2600,
+                780
+            ],
+            "parameters": {
+                "mode": "runOnceForAllItems",
+                "jsCode": "const item = $input.first().json;\nconst fileIds = JSON.parse(item.fileIdsJson || '[]');\nconst caption = item.caption || '';\n\nif (!fileIds.length) throw new Error('No hay fileIds');\n\nreturn fileIds.map((fileId, index) => ({\n  json: {\n    fileId,\n    imageUrl: `https://drive.google.com/uc?export=download&id=${fileId}`,\n    caption\n  }\n}));"
+            }
+        },
+        {
+            "id": "geo-car-008",
+            "name": "HTTP - Crear Item IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                2900,
+                780
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "image_url",
+                            "value": "={{ $json.imageUrl }}"
+                        },
+                        {
+                            "name": "is_carousel_item",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-car-009",
+            "name": "Code - Agregar IDs Geo",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                3200,
+                780
+            ],
+            "parameters": {
+                "mode": "runOnceForAllItems",
+                "jsCode": "const items = $input.all();\nconst ids = items.map(item => item.json.id).filter(Boolean);\n\nlet caption = '';\ntry { caption = $('Set - Caption Geo').first().json.caption; } \ncatch(e) { caption = 'Nuevas parcelas disponibles #GeoPatagonia'; }\n\nreturn [{\n  json: {\n    children: ids.join(','),\n    caption,\n    itemIds: ids\n  }\n}];"
+            }
+        },
+        {
+            "id": "geo-car-010",
+            "name": "HTTP - Crear Carrusel IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                3500,
+                780
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "media_type",
+                            "value": "CAROUSEL"
+                        },
+                        {
+                            "name": "children",
+                            "value": "={{ $json.children }}"
+                        },
+                        {
+                            "name": "caption",
+                            "value": "={{ $json.caption }}"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        },
+        {
+            "id": "geo-car-011",
+            "name": "Espera 60s - Carrusel",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1,
+            "position": [
+                3800,
+                780
+            ],
+            "webhookId": "wait-geo-car-001",
+            "parameters": {
+                "amount": 60,
+                "unit": "seconds"
+            }
+        },
+        {
+            "id": "geo-car-012",
+            "name": "Publicar Carrusel IG Geo",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                4100,
+                780
+            ],
+            "parameters": {
+                "method": "POST",
+                "url": "https://graph.facebook.com/v20.0/TU_IG_ACCOUNT_ID/media_publish",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "TU_IG_ACCESS_TOKEN_GEO"
+                        },
+                        {
+                            "name": "creation_id",
+                            "value": "={{ $json.id }}"
+                        }
+                    ]
+                },
+                "options": {}
+            }
+        }
+    ],
+    "connections": {
+        "Trigger Fotos Geo": {
+            "main": [
+                [
+                    {
+                        "node": "IA Caption - Foto Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "IA Caption - Foto Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Procesar Foto IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Procesar Foto IG Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Espera 60s - Foto",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Espera 60s - Foto": {
+            "main": [
+                [
+                    {
+                        "node": "Publicar Foto IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Publicar Foto IG Geo": {
+            "main": [
+                [
+                    {
+                        "node": "TikTok - Publicar Foto Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Trigger Videos Geo": {
+            "main": [
+                [
+                    {
+                        "node": "IA Caption - Video Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "IA Caption - Video Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Procesar Video IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Procesar Video IG Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Espera 60s - Video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Espera 60s - Video": {
+            "main": [
+                [
+                    {
+                        "node": "Publicar Video IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Scheduler Carrusel Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Listar Archivos Carrusel Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Listar Archivos Carrusel Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Code - Filtrar Imagenes Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Code - Filtrar Imagenes Geo": {
+            "main": [
+                [
+                    {
+                        "node": "IF - Hay suficientes imagenes?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "IF - Hay suficientes imagenes?": {
+            "main": [
+                [
+                    {
+                        "node": "IA Caption - Carrusel Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                []
+            ]
+        },
+        "IA Caption - Carrusel Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Set - Caption Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Set - Caption Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Code - Expandir Items Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Code - Expandir Items Geo": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP - Crear Item IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "HTTP - Crear Item IG Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Code - Agregar IDs Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Code - Agregar IDs Geo": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP - Crear Carrusel IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "HTTP - Crear Carrusel IG Geo": {
+            "main": [
+                [
+                    {
+                        "node": "Espera 60s - Carrusel",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Espera 60s - Carrusel": {
+            "main": [
+                [
+                    {
+                        "node": "Publicar Carrusel IG Geo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

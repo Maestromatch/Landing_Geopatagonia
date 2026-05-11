@@ -3,329 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoPatagonia | Terrenos Exclusivos & Topografía Pro</title>
-    <meta name="description" content="Venta de parcelas exclusivas en Llanada Grande y Los Muermos. Respaldo técnico topográfico y alta plusvalía.">
-    
-    <!-- Tailwind CSS (Fundamental para el nuevo diseño Premium) -->
+    <title>GeoPatagonia | Terrenos y Proyecto Llave en Mano</title>
+    <meta name="description" content="Parcelas en la Region de Los Lagos con respaldo topografico, master plan y opcion de proyecto llave en mano con Saúl el Constructor.">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <meta name="description" content="Venta de parcelas exclusivas en Llanada Grande y Los Muermos. Respaldo técnico topográfico y alta plusvalía.">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@300;400;600&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Estilos Personalizados y Animaciones -->
-    <style>
-      .font-cinzel { font-family: 'Cinzel', serif; }
-      .font-inter { font-family: 'Inter', sans-serif; }
-      
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-fade-in-up {
-        animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-      
-      .btn-gold-glow:hover {
-        box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
-        background-color: rgba(212, 175, 55, 0.05);
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-zinc-950 text-white">
-    <div class="background-fixed"></div>
-<body class="bg-zinc-950 text-white m-0 p-0 overflow-x-hidden">
-    
-    <div class="container">
-        <header>
-            <div class="logo">
-                <img src="https://fundolostres.grupogeopatagonia.cl/logo.png" alt="GeoPatagonia Logo" onerror="this.src='https://placehold.co/200x80/0b120b/00ff88?text=GEOPATAGONIA'">
-            </div>
-            <nav class="subtle-nav">
-                <span>Región de Los Lagos, Chile</span>
-            </nav>
-        </header>
-    <!-- ============================================== -->
-    <!-- HERO CINEMÁTICO GEOPATAGONIA                   -->
-    <!-- ============================================== -->
-    <header class="relative w-full h-screen overflow-hidden bg-zinc-950 flex items-center justify-center">
-        
-        <!-- Video de Fondo (Drone) -->
-        <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover opacity-50 pointer-events-none">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
-        </video>
-        
-        <!-- Overlay Gradiente -->
-        <div class="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/60 to-zinc-950"></div>
-        
-        <!-- Contenido Central -->
-        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center">
-            <span class="text-[#D4AF37] tracking-[0.3em] text-xs md:text-sm font-inter uppercase font-semibold mb-6 block opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
-                Exclusividad en el Sur de Chile
-            </span>
-            <h1 class="text-white font-cinzel text-5xl md:text-7xl lg:text-8xl font-medium leading-tight mb-8 opacity-0 animate-fade-in-up" style="animation-delay: 0.6s;">
-                El verdadero lujo <br/> es la <span class="italic text-zinc-400">naturaleza</span>.
-            </h1>
-            <p class="text-zinc-400 font-inter text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto leading-relaxed opacity-0 animate-fade-in-up" style="animation-delay: 1.0s;">
-                Diseño, Arquitectura y Tierra. Transforma tu visión en un refugio de alta plusvalía con nuestro equipo de expertos.
-            </p>
-            <button onclick="openSmartModal()" class="group relative px-10 py-4 border border-[#D4AF37]/70 rounded-sm overflow-hidden transition-all duration-500 btn-gold-glow opacity-0 animate-fade-in-up" style="animation-delay: 1.4s;">
-                <div class="absolute inset-0 w-0 bg-[#D4AF37] transition-all duration-[400ms] ease-out group-hover:w-full opacity-10"></div>
-                <span class="relative text-white font-inter text-sm tracking-[0.2em] uppercase group-hover:text-[#D4AF37] transition-colors duration-300">
-                    Comienza tu legado
-                </span>
-            </button>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 animate-fade-in-up" style="animation-delay: 2.0s;">
-            <span class="text-zinc-500 font-inter text-[10px] tracking-[0.3em] uppercase mb-3">Descubrir</span>
-            <div class="w-[1px] h-16 bg-gradient-to-b from-[#D4AF37] to-transparent animate-pulse"></div>
-        </div>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#inicio" aria-label="GeoPatagonia">
+            <img src="https://fundolostres.grupogeopatagonia.cl/logo.png" alt="GeoPatagonia" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span>GeoPatagonia</span>
+        </a>
+        <nav class="desktop-nav" aria-label="Navegacion principal">
+            <a href="#proyectos">Proyectos</a>
+            <a href="#pack">Terreno + Casa</a>
+            <a href="#tecnica">Certeza tecnica</a>
+            <button type="button" class="nav-cta" data-open-smart>Solicitar dossier</button>
+        </nav>
     </header>
 
-        <main>
-            <section class="hero">
-                <div class="badge">Certeza Técnica & Alta Plusvalía</div>
-                <h1>Tu herencia en la <span>Patagonia</span></h1>
-                <p class="hero-text">Parcelas desde 650 UF con levantamiento topográfico y rol propio. Invierte con la seguridad de la tecnología dron.</p>
-                
-                <div class="cta-group">
-                    <a href="#proyectos" class="btn btn-primary">Ver Proyectos Disponibles</a>
-                    <a href="https://wa.me/56952528416?text=Hola,%20busco%20información%20sobre%20las%20parcelas%20de%20GeoPatagonia" class="btn btn-whatsapp">
-                        <i>🟢</i> Hablar con un Asesor
-                    </a>
-    <!-- ============================================== -->
-    <!-- CONTENIDO ANTIGUO (SE MANTIENE POR AHORA)      -->
-    <!-- ============================================== -->
-    <main class="container mx-auto px-4 mt-20">
-        <section id="proyectos" class="projects-grid">
-            <!-- Fundo Los Tres -->
-            <div class="project-card animate-up">
-                <div class="card-image llanada-grande">
-                    <div class="price-tag">Desde 650 UF</div>
-                </div>
-            </section>
-                <div class="card-content">
-                    <h3>Fundo Los Tres</h3>
-                    <p class="location">📍 Llanada Grande, Cochamó</p>
-                    <ul class="features">
-                        <li>💧 Acceso a Lago Blanco y Azul</li>
-                        <li>🌲 Bosque Nativo & Historia Colona</li>
-                        <li>🚁 Tour Adventure 360° Disponible</li>
-                    </ul>
-                    <button onclick="openLeadModal('Llanada Grande')" class="btn btn-outline">Solicitar Master Plan</button>
+    <main id="inicio">
+        <section class="hero-section">
+            <video autoplay loop muted playsinline class="hero-video">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p class="eyebrow">Region de Los Lagos, Chile</p>
+                <h1>Terrenos con certeza tecnica para construir tu refugio en el sur.</h1>
+                <p class="hero-copy">GeoPatagonia conecta parcelas con rol propio, respaldo topografico y una ruta clara para transformar la compra de tierra en un proyecto habitable.</p>
+                <div class="hero-actions">
+                    <button type="button" class="btn btn-primary" data-open-smart>Comenzar evaluacion</button>
+                    <a class="btn btn-secondary" href="#proyectos">Ver proyectos</a>
                 </div>
             </div>
+            <a class="scroll-cue" href="#proyectos">Descubrir</a>
+        </section>
 
-            <section id="proyectos" class="projects-grid">
-                <!-- Fundo Los Tres -->
-                <div class="project-card animate-up">
-                    <div class="card-image llanada-grande">
-                        <div class="price-tag">Desde 650 UF</div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Fundo Los Tres</h3>
-                        <p class="location">📍 Llanada Grande, Cochamó</p>
-                        <ul class="features">
-                            <li>💧 Acceso a Lago Blanco y Azul</li>
-                            <li>🌲 Bosque Nativo & Historia Colona</li>
-                            <li>🚁 Tour Adventure 360° Disponible</li>
-                        </ul>
-                        <button onclick="openLeadModal('Llanada Grande')" class="btn btn-outline">Solicitar Master Plan</button>
-                    </div>
-            <!-- Valle Escondido -->
-            <div class="project-card animate-up" style="animation-delay: 0.2s;">
-                <div class="card-image los-muermos">
-                    <div class="price-tag">Desde 695 UF</div>
-                </div>
-                <div class="card-content">
-                    <h3>Valle Escondido</h3>
-                    <p class="location">📍 Los Muermos, Los Lagos</p>
-                    <ul class="features">
-                        <li>✈️ A 23km del Aeropuerto El Tepual</li>
-                        <li>📈 Alta Plusvalía & Crecimiento</li>
-                        <li>💳 Financiamiento Directo Disponible</li>
-                    </ul>
-                    <button onclick="openLeadModal('Los Muermos')" class="btn btn-outline">Solicitar Master Plan</button>
-                </div>
+        <section class="section intro-grid" aria-label="Resumen comercial">
+            <div>
+                <p class="eyebrow">Embudo GeoPatagonia + Saul</p>
+                <h2>Una oferta pensada para quien quiere invertir, vivir o construir en la Patagonia.</h2>
+            </div>
+            <div class="summary-list">
+                <article>
+                    <span>01</span>
+                    <h3>Terreno seleccionado</h3>
+                    <p>Parcelas con ubicacion, rol propio y documentacion comercial preparada para enviar al lead.</p>
+                </article>
+                <article>
+                    <span>02</span>
+                    <h3>Respaldo tecnico</h3>
+                    <p>Topografia, dron, factibilidades y material KMZ para bajar incertidumbre antes de visitar.</p>
+                </article>
+                <article>
+                    <span>03</span>
+                    <h3>Ruta de construccion</h3>
+                    <p>Opcion de conectar el terreno con diseno, SIP y presupuesto inicial de Saúl el Constructor.</p>
+                </article>
             </div>
         </section>
 
-                <!-- Valle Escondido -->
-                <div class="project-card animate-up" style="animation-delay: 0.2s;">
-                    <div class="card-image los-muermos">
-                        <div class="price-tag">Desde 695 UF</div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Valle Escondido</h3>
-                        <p class="location">📍 Los Muermos, Los Lagos</p>
-                        <ul class="features">
-                            <li>✈️ A 23km del Aeropuerto El Tepual</li>
-                            <li>📈 Alta Plusvalía & Crecimiento</li>
-                            <li>💳 Financiamiento Directo Disponible</li>
-                        </ul>
-                        <button onclick="openLeadModal('Los Muermos')" class="btn btn-outline">Solicitar Master Plan</button>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tech-section">
-                <div class="tech-content">
-                    <h2>Tecnología en cada metro cuadrado</h2>
-                    <p>No solo vendemos tierra, entregamos <strong>certeza técnica</strong>. Usamos drones de alta precisión y topografía profesional para garantizar que tu inversión sea exacta y segura.</p>
-                </div>
-                <div class="tech-icons">
-                    <div class="icon-box">🚁 <span>Fotogrametría</span></div>
-                    <div class="icon-box">📐 <span>Topografía</span></div>
-                    <div class="icon-box">⚖️ <span>Asesoría Legal</span></div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="subtle-footer">
-            <p>&copy; 2026 Grupo GeoPatagonia | Gestión Estratégica</p>
-            <div class="constructor-link">
-                <p>¿Planeas construir? <a href="../../landing-bio/index.html">Conoce el pack Terreno + Casa SIP</a></p>
-        <section class="tech-section mb-16">
-            <div class="tech-content">
-                <h2>Tecnología en cada metro cuadrado</h2>
-                <p>No solo vendemos tierra, entregamos <strong>certeza técnica</strong>. Usamos drones de alta precisión y topografía profesional para garantizar que tu inversión sea exacta y segura.</p>
+        <section id="proyectos" class="section">
+            <div class="section-heading">
+                <p class="eyebrow">Proyectos disponibles</p>
+                <h2>Dos entradas comerciales para captar distintos perfiles.</h2>
             </div>
-        </footer>
-    </div>
-            <div class="tech-icons">
-                <div class="icon-box">🚁 <span>Fotogrametría</span></div>
-                <div class="icon-box">📐 <span>Topografía</span></div>
-                <div class="icon-box">⚖️ <span>Asesoría Legal</span></div>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div class="project-image llanada-grande">
+                        <span>Desde 650 UF</span>
+                    </div>
+                    <div class="project-content">
+                        <p class="location">Llanada Grande, Cochamo</p>
+                        <h3>Fundo Los Tres</h3>
+                        <p>Parcelas para quienes buscan naturaleza, acceso a lagos y una experiencia de retiro o segunda vivienda con alta diferenciacion.</p>
+                        <ul>
+                            <li>Rol propio y master plan</li>
+                            <li>Material dron y KMZ</li>
+                            <li>Potencial para pack terreno + casa</li>
+                        </ul>
+                        <button type="button" class="btn btn-outline" data-project="Fundo Los Tres">Solicitar master plan</button>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image los-muermos">
+                        <span>Desde 695 UF</span>
+                    </div>
+                    <div class="project-content">
+                        <p class="location">Los Muermos, Los Lagos</p>
+                        <h3>Valle Escondido</h3>
+                        <p>Alternativa para inversionistas que priorizan conectividad, plusvalia y cercania a Puerto Montt y aeropuerto El Tepual.</p>
+                        <ul>
+                            <li>A 23 km del aeropuerto</li>
+                            <li>Financiamiento directo sujeto a evaluacion</li>
+                            <li>Enfoque inversion y crecimiento</li>
+                        </ul>
+                        <button type="button" class="btn btn-outline" data-project="Valle Escondido">Solicitar master plan</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="pack" class="section pack-section">
+            <div class="pack-copy">
+                <p class="eyebrow">Pack Patagonia</p>
+                <h2>La evolucion natural: vender tierra con camino a obra.</h2>
+                <p>El diferencial de la idea no es solo publicar parcelas. Es capturar al comprador que quiere resolver la incertidumbre completa: donde construir, cuanto cuesta avanzar y que equipo puede hacerse cargo.</p>
+            </div>
+            <div class="pack-options">
+                <button type="button" data-intention="Pack Llave en Mano">Busco terreno + casa</button>
+                <button type="button" data-intention="Solo Terreno">Quiero invertir en tierra</button>
+                <button type="button" data-intention="Topografia y Diseño">Ya tengo terreno</button>
+            </div>
+        </section>
+
+        <section id="tecnica" class="section tech-section">
+            <div>
+                <p class="eyebrow">Certeza antes de comprar</p>
+                <h2>Tecnologia aplicada al proceso comercial.</h2>
+                <p>No se trata solo de una galeria bonita. La promesa debe sostenerse con levantamiento tecnico, documentacion clara y seguimiento automatizado.</p>
+            </div>
+            <div class="tech-grid">
+                <article>
+                    <strong>Dron</strong>
+                    <span>Fotos, video y lectura real del entorno.</span>
+                </article>
+                <article>
+                    <strong>Topografia</strong>
+                    <span>Datos concretos para evaluar pendiente, accesos y uso.</span>
+                </article>
+                <article>
+                    <strong>Automatizacion</strong>
+                    <span>n8n clasifica el lead y avisa al equipo correcto.</span>
+                </article>
             </div>
         </section>
     </main>
 
-    <!-- Modal para Captura de Leads -->
-    <div id="leadModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLeadModal()">&times;</span>
-            <h2 id="modalTitle">Interés en Proyecto</h2>
-    <footer class="subtle-footer pb-10">
-        <p class="text-center text-zinc-500">&copy; 2026 Grupo GeoPatagonia | Gestión Estratégica</p>
-    </footer>
+    <button type="button" class="floating-cta" data-open-smart>Evaluar mi proyecto</button>
 
-    <!-- ============================================== -->
-    <!-- COTIZADOR PREMIUM (SMART MODAL NUEVO)          -->
-    <!-- ============================================== -->
-    <div id="smart-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md items-center justify-center p-4 transition-opacity duration-300">
-        <div class="bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl w-full max-w-xl overflow-hidden relative">
-            
-            <!-- Barra de Progreso Dorada -->
-            <div class="bg-zinc-900 h-1 w-full">
-                <div id="progress-bar" class="bg-[#D4AF37] h-1 w-1/3 transition-all duration-500"></div>
-            </div>
-
-            <div class="p-8 md:p-10 relative">
-                <button onclick="closeSmartModal()" class="absolute top-6 right-6 text-zinc-500 hover:text-[#D4AF37] transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-
-                <!-- PASO 1: Visión -->
-                <div id="step-1" class="step-container animate-fade-in-up">
-                    <span class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase font-semibold mb-2 block">Paso 1 de 3</span>
-                    <h3 class="text-3xl font-cinzel text-white mb-2">¿Cuál es tu visión?</h3>
-                    <p class="text-zinc-400 mb-8 font-inter text-sm font-light">Selecciona el pilar que mejor describa tu proyecto en la Patagonia.</p>
-                    
-                    <div class="space-y-4 font-inter">
-                        <button onclick="nextStep(2, 'Pack Llave en Mano', 'intencion')" class="w-full p-5 border border-zinc-800 bg-zinc-900/50 rounded-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 text-left transition-all group flex items-center justify-between">
-                            <div>
-                                <span class="block text-lg text-white font-medium group-hover:text-[#D4AF37] transition-colors">Tierra & Obra</span>
-                                <span class="text-sm text-zinc-500 font-light mt-1 block">Busco parcela y construir mi refugio.</span>
-                            </div>
-                            <span class="text-zinc-600 group-hover:text-[#D4AF37]">→</span>
-                        </button>
-                        <button onclick="nextStep(2, 'Solo Terreno', 'intencion')" class="w-full p-5 border border-zinc-800 bg-zinc-900/50 rounded-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 text-left transition-all group flex items-center justify-between">
-                            <div>
-                                <span class="block text-lg text-white font-medium group-hover:text-[#D4AF37] transition-colors">Colección de Parcelas</span>
-                                <span class="text-sm text-zinc-500 font-light mt-1 block">Quiero invertir en tierra con alta plusvalía.</span>
-                            </div>
-                            <span class="text-zinc-600 group-hover:text-[#D4AF37]">→</span>
-                        </button>
-                        <button onclick="nextStep(2, 'Arquitectura y Topografia', 'intencion')" class="w-full p-5 border border-zinc-800 bg-zinc-900/50 rounded-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 text-left transition-all group flex items-center justify-between">
-                            <div>
-                                <span class="block text-lg text-white font-medium group-hover:text-[#D4AF37] transition-colors">Diseño & Topografía</span>
-                                <span class="text-sm text-zinc-500 font-light mt-1 block">Ya tengo terreno, necesito asesoría técnica.</span>
-                            </div>
-                            <span class="text-zinc-600 group-hover:text-[#D4AF37]">→</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PASO 2: Plazos -->
-                <div id="step-2" class="step-container hidden animate-fade-in-up">
-                    <button onclick="prevStep(1)" class="text-xs text-zinc-500 mb-6 flex items-center gap-2 hover:text-white uppercase tracking-widest transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Volver</button>
-                    <span class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase font-semibold mb-2 block">Paso 2 de 3</span>
-                    <h3 class="text-3xl font-cinzel text-white mb-2">Plazos del Proyecto</h3>
-                    <p class="text-zinc-400 mb-8 font-inter text-sm font-light">¿Para cuándo tienes planificado materializar esta inversión?</p>
-                    
-                    <div class="grid grid-cols-1 gap-4 font-inter">
-                        <button onclick="nextStep(3, 'Inmediato (0-3 meses)', 'plazo')" class="p-5 border border-zinc-800 bg-zinc-900/50 rounded-sm hover:border-[#D4AF37] text-center text-white font-light transition-all">Lo antes posible (0 - 3 meses)</button>
-                        <button onclick="nextStep(3, 'Mediano plazo (3-6 meses)', 'plazo')" class="p-5 border border-zinc-800 bg-zinc-900/50 rounded-sm hover:border-[#D4AF37] text-center text-white font-light transition-all">Este año (3 - 6 meses)</button>
-                        <button onclick="nextStep(3, 'Largo plazo (Inversion)', 'plazo')" class="p-5 border border-zinc-800 bg-zinc-900/50 rounded-sm hover:border-[#D4AF37] text-center text-white font-light transition-all">Pensando a futuro / Inversión</button>
-                    </div>
-                </div>
-
-                <!-- PASO 3: Formulario -->
-                <div id="step-3" class="step-container hidden animate-fade-in-up">
-                    <button onclick="prevStep(2)" class="text-xs text-zinc-500 mb-6 flex items-center gap-2 hover:text-white uppercase tracking-widest transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Volver</button>
-                    <span class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase font-semibold mb-2 block">Paso 3 de 3</span>
-                    <h3 class="text-3xl font-cinzel text-white mb-2">Tu Legado Comienza</h3>
-                    <p class="text-zinc-400 mb-8 font-inter text-sm font-light">Déjanos tus datos para asignarte a un asesor exclusivo que te enviará el Master Plan y los valores.</p>
-                    
-                    <form id="smart-lead-form" class="space-y-5 font-inter">
-                        <div>
-                            <label class="block text-[10px] text-zinc-500 mb-2 uppercase tracking-widest">Nombre Completo</label>
-                            <input type="text" id="smart-nombre" class="w-full bg-zinc-900 border border-zinc-800 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] focus:bg-black transition-colors font-light" placeholder="Ej. Juan Pérez" required>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label class="block text-[10px] text-zinc-500 mb-2 uppercase tracking-widest">WhatsApp</label>
-                                <input type="tel" id="smart-telefono" class="w-full bg-zinc-900 border border-zinc-800 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] focus:bg-black transition-colors font-light" placeholder="+569..." required>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] text-zinc-500 mb-2 uppercase tracking-widest">Correo Electrónico</label>
-                                <input type="email" id="smart-email" class="w-full bg-zinc-900 border border-zinc-800 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] focus:bg-black transition-colors font-light" placeholder="tu@correo.com" required>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" id="smart-submit-btn" class="w-full bg-[#D4AF37] text-black font-semibold text-sm tracking-[0.2em] uppercase py-4 rounded-sm mt-4 hover:bg-white hover:text-black transition-all duration-300">
-                            Solicitar Dossier
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Antiguo (Se mantiene oculto solo para que los botones de los proyectos antiguos no den error) -->
-    <div id="leadModal" class="modal" style="display:none; position:fixed; z-index:99; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8);">
-        <div class="modal-content" style="background-color:#18181b; margin:15% auto; padding:30px; border:1px solid #3f3f46; width:80%; max-width:500px; border-radius:8px;">
-            <span class="close" onclick="closeLeadModal()" style="color:#a1a1aa; float:right; font-size:28px; cursor:pointer;">&times;</span>
-            <h2 id="modalTitle" style="color:#D4AF37; font-family:'Cinzel', serif; margin-bottom:15px;">Interés en Proyecto</h2>
-            <p>Déjanos tus datos para enviarte el Master Plan, KMZ y lista de precios actualizada.</p>
-            <form id="geopatagonia-form">
-                <input type="text" id="geo-nombre" placeholder="Nombre completo" required>
-                <input type="tel" id="geo-telefono" value="569" required>
-                <select id="geo-proyecto">
-            <form id="geopatagonia-form" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
-                <input type="text" id="geo-nombre" placeholder="Nombre completo" required style="padding:10px; background:#27272a; border:none; color:white;">
-                <input type="tel" id="geo-telefono" value="569" required style="padding:10px; background:#27272a; border:none; color:white;">
-                <select id="geo-proyecto" style="padding:10px; background:#27272a; border:none; color:white;">
-                    <option value="Llanada Grande">Llanada Grande - Fundo Los Tres</option>
-                    <option value="Los Muermos">Los Muermos - Valle Escondido</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Enviar Información por WhatsApp</button>
-                <button type="submit" style="padding:15px; background:#D4AF37; color:black; font-weight:bold; border:none; cursor:pointer;">Enviar Información por WhatsApp</button>
+    <div id="lead-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
+        <div class="modal-card">
+            <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">x</button>
+            <p class="eyebrow">Solicitud directa</p>
+            <h2 id="lead-modal-title">Interes en proyecto</h2>
+            <p class="modal-copy">Dejanos tus datos y enviamos master plan, valores y siguiente paso recomendado.</p>
+            <form id="geopatagonia-form" class="lead-form">
+                <input type="hidden" id="geo-intencion" value="Solo Terreno">
+                <label>
+                    Nombre completo
+                    <input type="text" id="geo-nombre" name="nombre" required autocomplete="name">
+                </label>
+                <label>
+                    WhatsApp
+                    <input type="tel" id="geo-telefono" name="telefono" value="569" required autocomplete="tel">
+                </label>
+                <label>
+                    Correo electronico
+                    <input type="email" id="geo-email" name="email" autocomplete="email">
+                </label>
+                <label>
+                    Proyecto
+                    <select id="geo-proyecto" name="proyecto">
+                        <option value="Fundo Los Tres">Fundo Los Tres</option>
+                        <option value="Valle Escondido">Valle Escondido</option>
+                        <option value="Consulta General">Consulta General</option>
+                    </select>
+                </label>
+                <button type="submit" class="btn btn-primary">Enviar solicitud</button>
             </form>
         </div>
     </div>
+
+    <div id="smart-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="smart-title">
+        <div class="modal-card smart-card">
+            <button type="button" class="modal-close" data-close-smart aria-label="Cerrar">x</button>
+            <div class="progress-track">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+
+            <div id="step-1" class="step-container">
+                <p class="eyebrow">Paso 1 de 3</p>
+                <h2 id="smart-title">Cual es tu vision?</h2>
+                <p class="modal-copy">Selecciona el camino comercial para asignarte al asesor correcto.</p>
+                <div class="choice-list">
+                    <button type="button" data-next-step="2" data-type="intencion" data-value="Pack Llave en Mano">
+                        <strong>Terreno + obra</strong>
+                        <span>Busco parcela y construir mi refugio.</span>
+                    </button>
+                    <button type="button" data-next-step="2" data-type="intencion" data-value="Solo Terreno">
+                        <strong>Solo terreno</strong>
+                        <span>Quiero invertir en tierra con alta plusvalia.</span>
+                    </button>
+                    <button type="button" data-next-step="2" data-type="intencion" data-value="Topografia y Diseño">
+                        <strong>Ya tengo terreno</strong>
+                        <span>Necesito apoyo tecnico o diseno.</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-2" class="step-container hidden">
+                <button type="button" class="back-link" data-prev-step="1">Volver</button>
+                <p class="eyebrow">Paso 2 de 3</p>
+                <h2>Plazo del proyecto</h2>
+                <p class="modal-copy">Esto ayuda a priorizar respuesta y material comercial.</p>
+                <div class="choice-list">
+                    <button type="button" data-next-step="3" data-type="plazo" data-value="Inmediato 0-3 meses">0 a 3 meses</button>
+                    <button type="button" data-next-step="3" data-type="plazo" data-value="Mediano plazo 3-6 meses">3 a 6 meses</button>
+                    <button type="button" data-next-step="3" data-type="plazo" data-value="Inversion futura">Inversion futura</button>
+                </div>
+            </div>
+
+            <div id="step-3" class="step-container hidden">
+                <button type="button" class="back-link" data-prev-step="2">Volver</button>
+                <p class="eyebrow">Paso 3 de 3</p>
+                <h2>Tu dossier GeoPatagonia</h2>
+                <p class="modal-copy">Completa tus datos para enviar el resumen y activar seguimiento.</p>
+                <form id="smart-lead-form" class="lead-form">
+                    <label>
+                        Nombre completo
+                        <input type="text" id="smart-nombre" required autocomplete="name">
+                    </label>
+                    <label>
+                        WhatsApp
+                        <input type="tel" id="smart-telefono" value="569" required autocomplete="tel">
+                    </label>
+                    <label>
+                        Correo electronico
+                        <input type="email" id="smart-email" required autocomplete="email">
+                    </label>
+                    <button type="submit" id="smart-submit-btn" class="btn btn-primary">Solicitar dossier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>GeoPatagonia | Terrenos, topografia y estrategia comercial en el sur de Chile.</p>
+        <a href="../../landing-bio/index.html">Conocer pack con Saúl el Constructor</a>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

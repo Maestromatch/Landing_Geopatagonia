@@ -1,0 +1,318 @@
+{
+  "name": "GeoPatagonia - OIDO V1 (Leads + Clasificacion)",
+  "nodes": [
+    {
+      "id": "geo-oido-note",
+      "name": "LEER ANTES DE ACTIVAR",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        40
+      ],
+      "parameters": {
+        "content": "# GeoPatagonia OIDO V1\n\nRecibe leads desde la landing, normaliza los campos y clasifica la intencion comercial.\n\n## Pendientes antes de activar\n1. Confirmar que el path del Webhook sea `geopatagonia-lead`.\n2. Conectar las notificaciones reales: WhatsApp Cloud API, correo, Slack o Google Sheets/CRM.\n3. Reemplazar los nodos SET de notificacion por los canales definitivos.\n4. Probar con los tres casos: Solo Terreno, Pack Llave en Mano, Topografia y Diseno.",
+        "height": 320,
+        "width": 520,
+        "color": 5
+      }
+    },
+    {
+      "id": "geo-oido-webhook",
+      "name": "Webhook Lead GeoPatagonia",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        420
+      ],
+      "parameters": {
+        "path": "geopatagonia-lead",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "geo-oido-normalizar",
+      "name": "Normalizar y clasificar lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        420
+      ],
+      "parameters": {
+        "jsCode": "const input = $json.body || $json;\n\nconst clean = (value) => String(value || '').trim();\nconst intencionRaw = clean(input.intencion).toLowerCase();\nconst proyecto = clean(input.proyecto) || 'Consulta General';\n\nlet tipoLead = 'SOLO_TERRENO';\nlet responsable = 'GeoPatagonia';\nlet prioridad = 'MEDIA';\n\nif (intencionRaw.includes('llave') || intencionRaw.includes('obra') || intencionRaw.includes('casa')) {\n  tipoLead = 'TERRENO_Y_CASA';\n  responsable = 'GeoPatagonia + Saul';\n  prioridad = 'ALTA';\n}\n\nif (intencionRaw.includes('topografia') || intencionRaw.includes('diseño') || intencionRaw.includes('diseno')) {\n  tipoLead = 'SERVICIO_TECNICO';\n  responsable = 'Saul / Equipo Tecnico';\n  prioridad = 'MEDIA';\n}\n\nconst plazo = clean(input.plazo || 'No especificado');\nif (plazo.toLowerCase().includes('0-3') || plazo.toLowerCase().includes('inmediato')) {\n  prioridad = 'ALTA';\n}\n\nreturn [{\n  json: {\n    nombre: clean(input.nombre),\n    telefono: clean(input.telefono),\n    email: clean(input.email),\n    proyecto,\n    intencion: clean(input.intencion || 'Solo Terreno'),\n    plazo,\n    origen: clean(input.origen || input.canal || 'Landing GeoPatagonia'),\n    estado: 'nuevo',\n    tipoLead,\n    responsable,\n    prioridad,\n    recibidoEn: new Date().toISOString(),\n    resumen: `${clean(input.nombre) || 'Lead sin nombre'} | ${proyecto} | ${tipoLead} | ${prioridad}`\n  }\n}];"
+      }
+    },
+    {
+      "id": "geo-oido-if-premium",
+      "name": "IF Cliente Premium",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "premium-condition",
+              "leftValue": "={{ $json.tipoLead }}",
+              "rightValue": "TERRENO_Y_CASA",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "geo-oido-if-tecnico",
+      "name": "IF Servicio Tecnico",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        540
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "tecnico-condition",
+              "leftValue": "={{ $json.tipoLead }}",
+              "rightValue": "SERVICIO_TECNICO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "geo-oido-notificar-geo",
+      "name": "Notificar GeoPatagonia",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1020,
+        680
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mensaje-geo",
+              "name": "mensaje",
+              "type": "string",
+              "value": "=Nuevo lead GeoPatagonia\\nNombre: {{ $json.nombre }}\\nTelefono: {{ $json.telefono }}\\nEmail: {{ $json.email }}\\nProyecto: {{ $json.proyecto }}\\nIntencion: {{ $json.intencion }}\\nPlazo: {{ $json.plazo }}\\nPrioridad: {{ $json.prioridad }}"
+            },
+            {
+              "id": "destino-geo",
+              "name": "destino",
+              "type": "string",
+              "value": "GeoPatagonia"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "geo-oido-notificar-saul",
+      "name": "Notificar Saul",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1020,
+        480
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mensaje-saul",
+              "name": "mensaje",
+              "type": "string",
+              "value": "=Lead para Saul / Equipo tecnico\\nNombre: {{ $json.nombre }}\\nTelefono: {{ $json.telefono }}\\nEmail: {{ $json.email }}\\nProyecto: {{ $json.proyecto }}\\nIntencion: {{ $json.intencion }}\\nPlazo: {{ $json.plazo }}\\nPrioridad: {{ $json.prioridad }}"
+            },
+            {
+              "id": "destino-saul",
+              "name": "destino",
+              "type": "string",
+              "value": "Saul"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "geo-oido-notificar-premium",
+      "name": "Notificar Ambos - Cliente Premium",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1020,
+        260
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mensaje-premium",
+              "name": "mensaje",
+              "type": "string",
+              "value": "=CLIENTE PREMIUM GeoPatagonia + Saul\\nNombre: {{ $json.nombre }}\\nTelefono: {{ $json.telefono }}\\nEmail: {{ $json.email }}\\nProyecto: {{ $json.proyecto }}\\nIntencion: {{ $json.intencion }}\\nPlazo: {{ $json.plazo }}\\nPrioridad: {{ $json.prioridad }}"
+            },
+            {
+              "id": "destino-premium",
+              "name": "destino",
+              "type": "string",
+              "value": "GeoPatagonia + Saul"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "geo-oido-responder",
+      "name": "Responder Landing",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        480
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true, \"mensaje\": \"Lead recibido\", \"tipoLead\": \"{{ $json.tipoLead }}\", \"prioridad\": \"{{ $json.prioridad }}\" }",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Lead GeoPatagonia": {
+      "main": [
+        [
+          {
+            "node": "Normalizar y clasificar lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar y clasificar lead": {
+      "main": [
+        [
+          {
+            "node": "IF Cliente Premium",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Cliente Premium": {
+      "main": [
+        [
+          {
+            "node": "Notificar Ambos - Cliente Premium",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF Servicio Tecnico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Servicio Tecnico": {
+      "main": [
+        [
+          {
+            "node": "Notificar Saul",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notificar GeoPatagonia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar GeoPatagonia": {
+      "main": [
+        [
+          {
+            "node": "Responder Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Saul": {
+      "main": [
+        [
+          {
+            "node": "Responder Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Ambos - Cliente Premium": {
+      "main": [
+        [
+          {
+            "node": "Responder Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-05-11T00:00:00.000Z",
+  "versionId": "geo-oido-v1"
+}
