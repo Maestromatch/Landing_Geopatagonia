@@ -5,6 +5,8 @@ const smartData = {
     plazo: 'No especificado'
 };
 
+const WHATSAPP_NUMBER = '56952528416';
+
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -67,6 +69,24 @@ async function sendLead(leadData) {
     if (!response.ok) {
         throw new Error(`Webhook respondio con estado ${response.status}`);
     }
+}
+
+function buildWhatsAppUrl(leadData) {
+    const message = [
+        'Hola, quiero informacion de GeoPatagonia.',
+        `Nombre: ${leadData.nombre || 'No indicado'}`,
+        `Telefono: ${leadData.telefono || 'No indicado'}`,
+        `Email: ${leadData.email || 'No indicado'}`,
+        `Proyecto: ${leadData.proyecto || 'Consulta General'}`,
+        `Intencion: ${leadData.intencion || 'No especificada'}`,
+        leadData.plazo ? `Plazo: ${leadData.plazo}` : ''
+    ].filter(Boolean).join('\n');
+
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+function openWhatsAppFallback(leadData) {
+    window.open(buildWhatsAppUrl(leadData), '_blank', 'noopener,noreferrer');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -141,8 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2200);
         } catch (error) {
             console.error(error);
-            alert('No pudimos enviar la solicitud. Contactanos al +569 5252 8416.');
-            setSubmitting(button, 'Enviar solicitud', false);
+            openWhatsAppFallback(leadData);
+            setSubmitting(button, 'Abrimos WhatsApp para finalizar.', true);
+            setTimeout(() => {
+                setSubmitting(button, 'Enviar solicitud', false);
+            }, 2500);
         }
     });
 
@@ -172,8 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2200);
         } catch (error) {
             console.error(error);
-            alert('No pudimos enviar la solicitud. Contactanos al +569 5252 8416.');
-            setSubmitting(button, 'Solicitar dossier', false);
+            openWhatsAppFallback(leadData);
+            setSubmitting(button, 'Abrimos WhatsApp para finalizar.', true);
+            setTimeout(() => {
+                setSubmitting(button, 'Solicitar dossier', false);
+            }, 2500);
         }
     });
 });
